@@ -4,6 +4,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { firestore } from "../firebase";
+import { addDoc, collection, getDocs } from "@firebase/firestore";
+
+const refMessages = collection(firestore, "questions");
 
 export default function FacetoFace() {
   const [show, setShow] = useState(false);
@@ -17,13 +20,34 @@ export default function FacetoFace() {
   const handleGame = () => setGame(true);
 
   // Soruyu Firebase Gönder
-  const [question, setQuestion] = useState();
+  const [question, setQuestion] = useState("");
+  const [categoryId, setCategoryId] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    firestore.ref("questions").push({ question });
+    const data = {
+      question: question,
+      categoryId: categoryId,
+    };
+    try {
+      addDoc(refMessages, data);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
     setQuestion("");
+    setCategoryId();
   };
+
+  // Soruyu Firebase'den Oku
+
+  const readQuestions = async () => {
+    const data = await getDocs(refMessages);
+    setQuestion(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+  useEffect(() => {
+    readQuestions();
+  }, []);
   return (
     <>
       <Button variant="primary" onClick={handleOption}>
@@ -42,18 +66,34 @@ export default function FacetoFace() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Select
+              id={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              aria-label="Default select example"
+            >
+              <option>Kategori Seç</option>
+              <option id="1" value="1">
+                Dökül Bakalım
+              </option>
+              <option id="2" value="2">
+                Sorular Gelsin
+              </option>
+              <option id="3" value="3">
+                Cesaret Bizim İşimiz
+              </option>
+            </Form.Select>
+            <br />
+            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
               <button type="button">Soru Getir</button>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseGame}>
-            Kapat
-          </Button>
-          <Button variant="primary" onClick={handleCloseGame}>
-            Kaydet
-          </Button>
+          {question.map((q) => (
+            <p>
+              {q.question}
+            </p>
+          ))}
         </Modal.Footer>
       </Modal>
 
@@ -63,23 +103,25 @@ export default function FacetoFace() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Kullanıcı Adı</Form.Label>
-              <Form.Control
-                type="name"
-                placeholder="Kullanıcı adı giriniz."
-                autoFocus
-              />
-            </Form.Group>
             <Form.Group
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
             >
-              <Form.Select aria-label="Default select example">
+              <Form.Select
+                id={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                aria-label="Default select example"
+              >
                 <option>Kategori Seç</option>
-                <option value="1">Dökül Bakalım</option>
-                <option value="2">Sorular Gelsin</option>
-                <option value="3">Cesaret Bizim İşimiz</option>
+                <option id="1" value="1">
+                  Dökül Bakalım
+                </option>
+                <option id="2" value="2">
+                  Sorular Gelsin
+                </option>
+                <option id="3" value="3">
+                  Cesaret Bizim İşimiz
+                </option>
               </Form.Select>
               <br />
               <Form.Label>Sorunuzu girin</Form.Label>
@@ -89,7 +131,6 @@ export default function FacetoFace() {
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 as="input"
-                rows={3}
               />
               <Button type="submit" variant="success" onClick={handleSubmit}>
                 Soruyu Gönder
