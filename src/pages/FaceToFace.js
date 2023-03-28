@@ -4,29 +4,37 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { firestore } from "../firebase";
-import { addDoc, collection, getDocs } from "@firebase/firestore";
-
+import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
 const refMessages = collection(firestore, "questions");
 
 export default function FacetoFace() {
-  const [show, setShow] = useState(false);
+  // Soruyu Firebase Gönder
+  const [questions, setQuestions] = useState([]);
+  const [questionInput, setQuestionInput] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+
+  // const [show, setShow] = useState(false);
   // Ayarlar
   const [option, setOption] = useState(false);
   const handleClose = () => setOption(false);
-  const handleOption = () => setOption(true);
+  const handleOption = () => {
+    setOption(true);
+    setCategoryId("");
+  };
   // Oyun Oyna
   const [game, setGame] = useState(false);
   const handleCloseGame = () => setGame(false);
   const handleGame = () => setGame(true);
 
-  // Soruyu Firebase Gönder
-  const [question, setQuestion] = useState("");
-  const [categoryId, setCategoryId] = useState();
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!questionInput || !categoryId) {
+      alert("Kategori ve soru boş bırakılamaz");
+      return;
+    }
     const data = {
-      question: question,
+      question: questionInput,
       categoryId: categoryId,
     };
     try {
@@ -35,19 +43,27 @@ export default function FacetoFace() {
     } catch (err) {
       console.log(err);
     }
-    setQuestion("");
-    setCategoryId();
+    setQuestions([]);
+    setCategoryId("");
+    setQuestionInput("");
   };
 
   // Soruyu Firebase'den Oku
 
   const readQuestions = async () => {
-    const data = await getDocs(refMessages);
-    setQuestion(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const q = query(
+      collection(firestore, "questions"),
+      where("categoryId", "==", categoryId)
+    );
+    const data = await getDocs(q);
+
+    setQuestions(data.docs.map((doc) => doc.data()));
   };
-  useEffect(() => {
-    readQuestions();
-  }, []);
+  console.log(questions);
+  // useEffect(() => {
+  //   readQuestions();
+  // }, []);
+
   return (
     <>
       <Button variant="primary" onClick={handleOption}>
@@ -67,39 +83,34 @@ export default function FacetoFace() {
         <Modal.Body>
           <Form>
             <Form.Select
-              id={categoryId}
+              value={categoryId}
+              required
+              id={"categoryIdSelect"}
               onChange={(e) => setCategoryId(e.target.value)}
               aria-label="Default select example"
+              placeholder="Kategori Seç"
             >
-              <option>Kategori Seç</option>
-              <option id="1" value="1">
-                Dökül Bakalım
-              </option>
-              <option id="2" value="2">
-                Sorular Gelsin
-              </option>
-              <option id="3" value="3">
-                Cesaret Bizim İşimiz
-              </option>
+              <option value="">Kategori Seç</option>
+              <option value="1">Dökül Bakalım</option>
+              <option value="2">Sorular Gelsin</option>
+              <option value="3">Cesaret Bizim İşimiz</option>
             </Form.Select>
             <br />
             <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-              <button type="button">Soru Getir</button>
+              <button onClick={readQuestions} type="button">
+                Soru Getir
+              </button>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          {question.map((q) => (
-            <p>
-              {q.question}
-            </p>
-          ))}
+          {questions[Math.floor(Math.random() * questions.length)]?.question}
         </Modal.Footer>
       </Modal>
 
       <Modal show={option} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Ayarlar</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -108,29 +119,25 @@ export default function FacetoFace() {
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Select
-                id={categoryId}
+                value={categoryId}
+                required
+                id={"categoryIdSelect"}
                 onChange={(e) => setCategoryId(e.target.value)}
                 aria-label="Default select example"
+                placeholder="Kategori Seç"
               >
-                <option>Kategori Seç</option>
-                <option id="1" value="1">
-                  Dökül Bakalım
-                </option>
-                <option id="2" value="2">
-                  Sorular Gelsin
-                </option>
-                <option id="3" value="3">
-                  Cesaret Bizim İşimiz
-                </option>
+                <option value="">Kategori Seç</option>
+                <option value="1">Dökül Bakalım</option>
+                <option value="2">Sorular Gelsin</option>
+                <option value="3">Cesaret Bizim İşimiz</option>
               </Form.Select>
               <br />
               <Form.Label>Sorunuzu girin</Form.Label>
 
               <Form.Control
                 type="text"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                as="input"
+                value={questionInput}
+                onChange={(e) => setQuestionInput(e.target.value)}
               />
               <Button type="submit" variant="success" onClick={handleSubmit}>
                 Soruyu Gönder
