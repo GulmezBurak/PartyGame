@@ -41,7 +41,7 @@ span {
 .newQuestion:hover {
   background-color: #ffc229;
   box-shadow: #ff6314 0 -6px 8px inset;
-  transform: scale(1.125);
+  transform: scale(1.1);
 }
 
 .newQuestion:active {
@@ -53,4 +53,58 @@ span {
     font-size: 1.5rem;
     padding: 0.75rem 2rem;
   }
+}
+
+.getQuestion {
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: lightgray 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.24px;
+  display: block;
+  margin: 0 auto;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.getQuestion:hover {
+  background-color: rgb(129, 212, 242);
+  box-shadow: #1386ea 0 -6px 8px inset;
+  transform: scale(1.1);
+}
+
+.getQuestion:active {
+  transform: scale(1.025);
+}
+
+@media (min-width: 768px) {
+  .getQuestion {
+    font-size: 1.5rem;
+    padding: 0.75rem 2rem;
+  }
+}
+
+.questions {
+  padding: 5px;
+  height: 60px;
+  margin: 15px;
+  font-size: 30px;
+  font-weight: bold;
+  border: 2px solid black;
+  border-radius: 10px;
 }

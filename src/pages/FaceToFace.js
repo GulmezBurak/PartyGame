@@ -26,9 +26,9 @@ export default function FacetoFace() {
     setCategoryId("");
   };
   // Oyun Oyna
-  const [game, setGame] = useState(false);
-  const handleCloseGame = () => setGame(false);
-  const handleGame = () => setGame(true);
+  // const [game, setGame] = useState(false);
+  // const handleCloseGame = () => setGame(false);
+  // const handleGame = () => setGame(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -98,43 +98,37 @@ export default function FacetoFace() {
       </Button>
       <hr />
 
-      <Button variant="primary" onClick={handleGame}>
-        Oyun Oyna
-      </Button>
+      <Form style={{ margin: "15px" }}>
+        <Form.Select
+          size="lg"
+          value={categoryId}
+          required
+          id={"categoryIdSelect"}
+          onChange={(e) => setCategoryId(e.target.value)}
+          aria-label="Default select example"
+          placeholder="Kategori Seç"
+        >
+          <option value="">Kategori Seç</option>
+          <option value="1">Dökül Bakalım</option>
+          <option value="2">Sorular Gelsin</option>
+          <option value="3">Cesaret Bizim İşimiz</option>
+        </Form.Select>
+        <br />
+        <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+          <Button
+            className="getQuestion"
+            variant="getQuestion"
+            onClick={readQuestions}
+            type="button"
+          >
+            Soru Getir
+          </Button>
+        </Form.Group>
+      </Form>
 
-      <Modal show={game} onHide={handleCloseGame}>
-        <Modal.Header closeButton>
-          <Modal.Title>Oyun Oyna</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Select
-              value={categoryId}
-              required
-              id={"categoryIdSelect"}
-              onChange={(e) => setCategoryId(e.target.value)}
-              aria-label="Default select example"
-              placeholder="Kategori Seç"
-            >
-              <option value="">Kategori Seç</option>
-              <option value="1">Dökül Bakalım</option>
-              <option value="2">Sorular Gelsin</option>
-              <option value="3">Cesaret Bizim İşimiz</option>
-            </Form.Select>
-            <br />
-            <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-              <Button variant="primary" onClick={readQuestions} type="button">
-                Soru Getir
-              </Button>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <h3>
-            {questions[Math.floor(Math.random() * questions.length)]?.question}
-          </h3>
-        </Modal.Footer>
-      </Modal>
+      <div className="questions">
+        {questions[Math.floor(Math.random() * questions.length)]?.question}
+      </div>
 
       <Modal show={option} onHide={handleClose}>
         <Modal.Header closeButton>
