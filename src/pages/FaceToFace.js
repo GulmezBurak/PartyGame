@@ -5,6 +5,9 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { firestore } from "../firebase";
 import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const refMessages = collection(firestore, "questions");
 
 export default function FacetoFace() {
@@ -30,7 +33,7 @@ export default function FacetoFace() {
     e.preventDefault();
 
     if (!questionInput || !categoryId) {
-      alert("Kategori ve soru boş bırakılamaz");
+      toast.error("Kategori ve soru boş bırakılamaz!");
       return;
     }
     const data = {
@@ -40,6 +43,7 @@ export default function FacetoFace() {
     try {
       addDoc(refMessages, data);
       console.log(data);
+      toast.success("Soru kaydedildi.");
     } catch (err) {
       console.log(err);
     }
@@ -55,10 +59,12 @@ export default function FacetoFace() {
       collection(firestore, "questions"),
       where("categoryId", "==", categoryId)
     );
+
     const data = await getDocs(q);
 
     setQuestions(data.docs.map((doc) => doc.data()));
   };
+
   console.log(questions);
   // useEffect(() => {
   //   readQuestions();
@@ -67,7 +73,7 @@ export default function FacetoFace() {
   return (
     <>
       <Button variant="primary" onClick={handleOption}>
-        Ayarlar
+        Yeni Soru
       </Button>
       <br />
       <hr />
@@ -78,7 +84,7 @@ export default function FacetoFace() {
 
       <Modal show={game} onHide={handleCloseGame}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Oyun Oyna</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -97,20 +103,22 @@ export default function FacetoFace() {
             </Form.Select>
             <br />
             <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
-              <button onClick={readQuestions} type="button">
+              <Button variant="primary" onClick={readQuestions} type="button">
                 Soru Getir
-              </button>
+              </Button>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          {questions[Math.floor(Math.random() * questions.length)]?.question}
+          <h3>
+            {questions[Math.floor(Math.random() * questions.length)]?.question}
+          </h3>
         </Modal.Footer>
       </Modal>
 
       <Modal show={option} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Ayarlar</Modal.Title>
+          <Modal.Title>Yeni Soru</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -139,18 +147,12 @@ export default function FacetoFace() {
                 value={questionInput}
                 onChange={(e) => setQuestionInput(e.target.value)}
               />
-              <Button type="submit" variant="success" onClick={handleSubmit}>
-                Soruyu Gönder
-              </Button>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Kapat
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Kaydet
+          <Button type="submit" variant="success" onClick={handleSubmit}>
+            Soruyu Gönder
           </Button>
         </Modal.Footer>
       </Modal>
