@@ -7,6 +7,7 @@ import { firestore } from "../firebase";
 import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./FacetoFace.css";
 
 const refMessages = collection(firestore, "questions");
 
@@ -71,11 +72,30 @@ export default function FacetoFace() {
   // }, []);
 
   return (
-    <>
-      <Button variant="primary" onClick={handleOption}>
+    <div>
+      <div className="summary">
+        <h2>Nasıl oynanır ?</h2>
+        <hr />
+        <p>
+          <span>Oyun 3 kategoriden oluşur.</span>
+          <br />
+          <span>1-Dökül Bakalım:</span> Kimsenin bilmediği bir itirafta bulun ve
+          arkadaşların bunu yazanı tahmin etsin.
+          <br />
+          <span>2-Sorular Gelsin:</span> Merak ettiğin soruları anonim bir
+          şekilde sor.
+          <br />
+          <span>3-Cesaret bizim işimiz:</span> Arkadaşlarının cesaretini sına.
+          Yeni soru butonuyla oyuna kategorisine göre sorular ekleyin.
+          <br />
+          Yeni soruya tıklayın, kategori seçin ve sorunuzu kategoriye uygun
+          şekilde yazın. Rastgele sorular ile oyunun keyfini çıkarın !{" "}
+        </p>
+      </div>
+
+      <Button className="newQuestion" variant="primary" onClick={handleOption}>
         Yeni Soru
       </Button>
-      <br />
       <hr />
 
       <Button variant="primary" onClick={handleGame}>
@@ -156,6 +176,6 @@ export default function FacetoFace() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }
