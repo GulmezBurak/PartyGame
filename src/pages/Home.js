@@ -12,16 +12,16 @@ export default function Home() {
         <p>
           <span>Oyun 3 kategoriden oluşur.</span>
           <br />
-          <span>1-Dökül Bakalım:</span> Kimsenin bilmediği bir itirafta bulun ve
-          arkadaşların bunu yazanı tahmin etsin.
+          <span>1-Bu kim? :</span> Birine ait bir özelliği adını vermeden yaz.
+          Bakalım bu kim?
           <br />
-          <span>2-Sorular Gelsin:</span> Merak ettiğin soruları anonim bir
+          <span>2-Sorular Gelsin :</span> Merak ettiğin soruları anonim bir
           şekilde sor.
           <br />
-          <span>3-Cesaret bizim işimiz:</span> Arkadaşlarının cesaretini sına.
+          <span>3-Cesaret bizim işimiz :</span> Arkadaşlarının cesaretini sına.
           <br /> Yeni soru butonuyla oyuna kategorisine göre sorular ekleyin.
           <br />
-          Kategori seçin ve soru getir butonu ile skategoriye uygun rastgele
+          Kategori seçin ve soru getir butonu ile kategoriye uygun rastgele
           sorular ile oyunun keyfini çıkarın !
         </p>
       </div>
