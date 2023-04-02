@@ -6,10 +6,34 @@ export default function Home() {
 
   return (
     <div>
-      <h2 className="text-center text-3xl font-bold py-8">PARTY GAME</h2>
+      <div className="summary">
+        <h2>Nasıl oynanır ?</h2>
+        <hr />
+        <p>
+          <span>Oyun 3 kategoriden oluşur.</span>
+          <br />
+          <span>1-Dökül Bakalım:</span> Kimsenin bilmediği bir itirafta bulun ve
+          arkadaşların bunu yazanı tahmin etsin.
+          <br />
+          <span>2-Sorular Gelsin:</span> Merak ettiğin soruları anonim bir
+          şekilde sor.
+          <br />
+          <span>3-Cesaret bizim işimiz:</span> Arkadaşlarının cesaretini sına.
+          <br /> Yeni soru butonuyla oyuna kategorisine göre sorular ekleyin.
+          <br />
+          Kategori seçin ve soru getir butonu ile skategoriye uygun rastgele
+          sorular ile oyunun keyfini çıkarın !
+        </p>
+      </div>
       <br />
-      <button onClick={() => navigate("/FaceToFace")}>Play Face to Face</button>
-      <button onClick={() => navigate("/PlayOnline")}>Play Online</button>
+      <div>
+        <button className="homeButton" onClick={() => navigate("/FaceToFace")}>
+          Play Face to Face
+        </button>
+        <button className="homeButton" onClick={() => navigate("/PlayOnline")}>
+          Play Online
+        </button>
+      </div>
     </div>
   );
 }

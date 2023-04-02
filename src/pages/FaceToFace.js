@@ -8,6 +8,7 @@ import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./FacetoFace.css";
+import Accordion from "react-bootstrap/Accordion";
 
 const refMessages = collection(firestore, "questions");
 
@@ -73,25 +74,34 @@ export default function FacetoFace() {
 
   return (
     <div>
-      <div className="summary">
-        <h2>Nasıl oynanır ?</h2>
-        <hr />
-        <p>
-          <span>Oyun 3 kategoriden oluşur.</span>
-          <br />
-          <span>1-Dökül Bakalım:</span> Kimsenin bilmediği bir itirafta bulun ve
-          arkadaşların bunu yazanı tahmin etsin.
-          <br />
-          <span>2-Sorular Gelsin:</span> Merak ettiğin soruları anonim bir
-          şekilde sor.
-          <br />
-          <span>3-Cesaret bizim işimiz:</span> Arkadaşlarının cesaretini sına.
-          Yeni soru butonuyla oyuna kategorisine göre sorular ekleyin.
-          <br />
-          Yeni soruya tıklayın, kategori seçin ve sorunuzu kategoriye uygun
-          şekilde yazın. Rastgele sorular ile oyunun keyfini çıkarın !{" "}
-        </p>
-      </div>
+      <Accordion defaultActiveKey="0" className="accordion">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Nasıl Oynanır ?</Accordion.Header>
+          <Accordion.Body>
+            <div className="summary">
+              <h2>Nasıl oynanır ?</h2>
+              <hr />
+              <p>
+                <span>Oyun 3 kategoriden oluşur.</span>
+                <br />
+                <span>1-Dökül Bakalım:</span> Kimsenin bilmediği bir itirafta
+                bulun ve arkadaşların bunu yazanı tahmin etsin.
+                <br />
+                <span>2-Sorular Gelsin:</span> Merak ettiğin soruları anonim bir
+                şekilde sor.
+                <br />
+                <span>3-Cesaret bizim işimiz:</span> Arkadaşlarının cesaretini
+                sına.
+                <br /> Yeni soru butonuyla oyuna kategorisine göre sorular
+                ekleyin.
+                <br />
+                Kategori seçin ve soru getir butonu ile skategoriye uygun
+                rastgele sorular ile oyunun keyfini çıkarın !
+              </p>
+            </div>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
 
       <Button className="newQuestion" variant="primary" onClick={handleOption}>
         Yeni Soru
@@ -109,7 +119,7 @@ export default function FacetoFace() {
           placeholder="Kategori Seç"
         >
           <option value="">Kategori Seç</option>
-          <option value="1">Dökül Bakalım</option>
+          <option value="1">Bu kim?</option>
           <option value="2">Sorular Gelsin</option>
           <option value="3">Cesaret Bizim İşimiz</option>
         </Form.Select>
@@ -149,7 +159,7 @@ export default function FacetoFace() {
                 placeholder="Kategori Seç"
               >
                 <option value="">Kategori Seç</option>
-                <option value="1">Dökül Bakalım</option>
+                <option value="1">Bu kim?</option>
                 <option value="2">Sorular Gelsin</option>
                 <option value="3">Cesaret Bizim İşimiz</option>
               </Form.Select>
@@ -166,7 +176,7 @@ export default function FacetoFace() {
         </Modal.Body>
         <Modal.Footer>
           <Button type="submit" variant="success" onClick={handleSubmit}>
-            Soruyu Gönder
+            Soru Ekle
           </Button>
         </Modal.Footer>
       </Modal>

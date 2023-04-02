@@ -105,6 +105,25 @@ span {
   margin: 15px;
   font-size: 30px;
   font-weight: bold;
-  border: 2px solid black;
-  border-radius: 10px;
+  /* border-width: 100%;
+
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 10px; */
+}
+.accordion {
+  margin: 20px auto;
+}
+
+.homeButton {
+  margin: 20px;
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.homeButton:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.1);
 }
