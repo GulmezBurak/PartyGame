@@ -57,6 +57,11 @@ export default function FacetoFace() {
   // Soruyu Firebase'den Oku
 
   const readQuestions = async () => {
+    if (!categoryId) {
+      toast.error("Kategori boş bırakılamaz!");
+      setQuestionInput("");
+      return;
+    }
     const q = query(
       collection(firestore, "questions"),
       where("categoryId", "==", categoryId)

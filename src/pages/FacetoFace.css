@@ -116,14 +116,18 @@ span {
 
 .homeButton {
   margin: 20px;
-
-  text-align: center;
-  display: flex;
+  display: inline-block;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
+
 .homeButton:hover {
   background-color: #ffc229;
   box-shadow: #ff6314 0 -6px 8px inset;
   transform: scale(1.1);
+}
+.homeButton:active,
+.homeButton:visited {
+  background-color: yellow;
 }
